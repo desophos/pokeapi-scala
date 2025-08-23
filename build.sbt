@@ -25,16 +25,16 @@ lazy val pokeapi = project
       "com.softwaremill.sttp.client3" %% "core"                           % "3.9.3",
       "com.softwaremill.sttp.client3" %% "zio-json"                       % "3.9.3",
       "com.github.blemale"            %% "scaffeine"                      % "5.2.1",
-      "org.scalameta"                 %% "munit"                          % "1.0.0-M11" % Test,
-      "com.softwaremill.sttp.client3" %% "armeria-backend-cats"           % "3.9.3"     % Test,
-      "com.softwaremill.sttp.client3" %% "async-http-client-backend-cats" % "3.9.3"     % Test,
-      "com.softwaremill.sttp.client3" %% "fs2"                            % "3.9.3"     % Test,
-      "com.softwaremill.sttp.client3" %% "async-http-client-backend-fs2"  % "3.9.3"     % Test,
-      "com.softwaremill.sttp.client3" %% "zio"                            % "3.9.3"     % Test,
-      "com.softwaremill.sttp.client3" %% "async-http-client-backend-zio"  % "3.9.3"     % Test,
-      "com.softwaremill.sttp.client3" %% "armeria-backend-zio"            % "3.9.3"     % Test,
-      "com.softwaremill.sttp.client3" %% "armeria-backend"                % "3.9.3"     % Test,
-      "com.softwaremill.sttp.client3" %% "okhttp-backend"                 % "3.9.3"     % Test
+      "org.scalameta"                 %% "munit"                          % "1.1.1" % Test,
+      "com.softwaremill.sttp.client3" %% "armeria-backend-cats"           % "3.9.3" % Test,
+      "com.softwaremill.sttp.client3" %% "async-http-client-backend-cats" % "3.9.3" % Test,
+      "com.softwaremill.sttp.client3" %% "fs2"                            % "3.9.3" % Test,
+      "com.softwaremill.sttp.client3" %% "async-http-client-backend-fs2"  % "3.9.3" % Test,
+      "com.softwaremill.sttp.client3" %% "zio"                            % "3.9.3" % Test,
+      "com.softwaremill.sttp.client3" %% "async-http-client-backend-zio"  % "3.9.3" % Test,
+      "com.softwaremill.sttp.client3" %% "armeria-backend-zio"            % "3.9.3" % Test,
+      "com.softwaremill.sttp.client3" %% "armeria-backend"                % "3.9.3" % Test,
+      "com.softwaremill.sttp.client3" %% "okhttp-backend"                 % "3.9.3" % Test
     ),
     excludeDependencies ++= Seq(
       "org.scala-lang.modules" % "scala-collection-compat_2.13"
