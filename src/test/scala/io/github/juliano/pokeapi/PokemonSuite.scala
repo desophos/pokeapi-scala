@@ -1,11 +1,8 @@
 package io.github.juliano.pokeapi
 
 import io.github.juliano.pokeapi.requests.*
-import sttp.client3.asynchttpclient.zio.AsyncHttpClientZioBackend
 
 class PokemonSuite extends ZIOSuite:
-  val client = AsyncHttpClientZioBackend().map(implicit backend => PokeApiClient())
-
   spec("ability by id", AbilityRequest(1), _.name == "stench")
   spec("ability by name", AbilityRequest("stench"), _.id == 1)
   spec("ability resource list", AbilityRequest.resourceList(), _.count == 367)

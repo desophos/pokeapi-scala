@@ -1,12 +1,8 @@
 package io.github.juliano.pokeapi
 
-import cats.effect.IO
 import io.github.juliano.pokeapi.requests.*
-import sttp.client3.asynchttpclient.cats.AsyncHttpClientCatsBackend
 
 class LocationsSuite extends CatsSuite:
-  val client = AsyncHttpClientCatsBackend[IO]().map(implicit backend => PokeApiClient())
-
   spec("location by id", LocationRequest(1), _.name == "canalave-city")
   spec("location by name", LocationRequest("canalave-city"), _.id == 1)
   spec("location resource list", LocationRequest.resourceList(), _.count == 1036)
