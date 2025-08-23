@@ -82,6 +82,17 @@ package object pokeapi:
       client().send(request).map(result => assert(predicate(result), result))
     }
 
+    def spec[T, A](
+        label: String,
+        request: PokeRequest[T],
+        keyFn: T => A = identity,
+        expected: A
+    )(using
+        JsonDecoder[T]
+    ): Unit = test(label) {
+      client().send(request).map(result => assertEquals(keyFn(result), expected))
+    }
+
   trait FutureSuite extends EffectSuite[Future]:
     import scala.concurrent.ExecutionContext.Implicits.global
     override val backend = Future(sttp.client3.HttpClientFutureBackend())
