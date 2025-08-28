@@ -1,6 +1,7 @@
 package io.github.juliano.pokeapi
 
 import com.github.blemale.scaffeine.{ Cache, Scaffeine }
+import io.github.juliano.pokeapi.models.ResourceList
 import io.github.juliano.pokeapi.PokeApiClient.*
 import sttp.client3.*
 import sttp.client3.ziojson.asJson
@@ -15,41 +16,49 @@ case class PokeApiClient[F[_], +P](host: ApiHost = ApiHost.default)(using
     backend: SttpBackend[F, P]
 ):
   given monadError: MonadError[F] = backend.responseMonad
-  private val cache: Cache[String, Product] = Scaffeine().build[String, Product]()
+  private def cache[A, R]: Cache[PokeRequest[A, R], A] =
+    Scaffeine().build[PokeRequest[A, R], A]()
 
-  def send[A](request: PokeRequest[A])(using JsonDecoder[A]): F[A] =
-    cache.getIfPresent(request.toString) match
+  def send[A: JsonDecoder, R: ApiPath](request: PokeRequest[A, R]): F[A] =
+    cache.getIfPresent(request) match
       case Some(value) =>
-        monadError.unit(value.asInstanceOf[A])
+        monadError.unit(value)
       case None =>
-        doSend(request).flatMap {
-          case Right(value) =>
-            cache.put(request.toString, value.asInstanceOf[Product])
-            monadError.unit(value)
-          case Left(error) => monadError.error(error)
-        }
+        request
+          .sttpRequest(host)
+          .send(backend)
+          .map(_.body)
+          .flatMap {
+            case Right(value) =>
+              cache.put(request, value)
+              monadError.unit(value)
+            case Left(error) => monadError.error(error)
+          }
 
-  private def doSend[A](
-      request: PokeRequest[A]
-  )(using JsonDecoder[A]): F[Either[FailureResponse, A]] =
-    request
-      .sttpRequest(host)
-      .send(backend)
-      .map(_.body)
+  def send[A: JsonDecoder: ApiPath](request: SimplePokeRequest[A]): F[A] = send(request)
+
+  def send[R: ApiPath](request: ResourceListRequest[R]): F[ResourceList] = send(request)
 
 object PokeApiClient:
   type FailureResponse = ResponseException[String, String]
   type SttpRequest[A]  = Request[Either[FailureResponse, A], Any]
 
-  trait PokeRequest[A](id: String | Long):
-    val resource: String
+  sealed trait PokeRequest[A: JsonDecoder, R: ApiPath](
+      id: String | Long,
+      params: Map[String, String] = Map.empty
+  ):
+    def sttpRequest(host: ApiHost): SttpRequest[A] =
+      basicRequest
+        .get(host.uri.addResourcePath[R](id).addParams(params))
+        .readTimeout(10.seconds)
+        .contentType(MediaType.ApplicationJson)
+        .response(asJson[A])
 
-    def sttpRequest(host: ApiHost)(using JsonDecoder[A]): SttpRequest[A] =
-      makeRequest(host.uri.addPath(resource, id.toString))
+  case class SimplePokeRequest[A: JsonDecoder: ApiPath](id: String | Long)
+      extends PokeRequest[A, A](id)
 
-  def makeRequest[A](uri: Uri)(using JsonDecoder[A]): SttpRequest[A] =
-    basicRequest
-      .get(uri)
-      .readTimeout(10.seconds)
-      .contentType(MediaType.ApplicationJson)
-      .response(asJson[A])
+  case class ResourceListRequest[R: ApiPath](offset: Int = 0, limit: Int = 20)
+      extends PokeRequest[ResourceList, R](
+        "",
+        Map("offset" -> offset.toString, "limit" -> limit.toString)
+      )
