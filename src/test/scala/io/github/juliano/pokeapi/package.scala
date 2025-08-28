@@ -4,44 +4,33 @@ import io.github.juliano.pokeapi.PokeApiClient.PokeRequest
 import scala.concurrent.Future
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.util.Try
-import munit.{ AfterEach, AnyFixture, BeforeEach, FunSuite }
+import munit.{ AfterEach, AnyFixture, BeforeEach, Compare, FunSuite }
+import sttp.monad.MonadError
+import sttp.monad.syntax.*
 import sttp.client3.{ Identity, SttpBackend }
-import magnolia1.Monadic
-import magnolia1.Monadic.*
-import zio.ZIO
+import zio.{ Task, ZIO }
 import zio.json.JsonDecoder
 import cats.effect.IO
 
 package object pokeapi:
-  extension [F[_]](m: Monadic[F]) def unit: F[Unit] = m.point(())
+  given MonadError[Identity] = sttp.client3.monad.IdMonad
+  given MonadError[Try] = sttp.monad.TryMonad
+  given MonadError[Future] = sttp.monad.FutureMonad()
+  given MonadError[IO] = sttp.client3.impl.cats.CatsMonadError[IO]
+  given MonadError[Task] = sttp.client3.impl.zio.RIOMonadAsyncError[Any]
 
-  given Monadic[Identity] with
-    def point[A](value: A): Identity[A]                                     = value
-    def map[A, B](from: Identity[A])(fn: A => B): Identity[B]               = fn(from)
-    def flatMap[A, B](from: Identity[A])(fn: A => Identity[B]): Identity[B] = fn(from)
-
-  given [R, E]: Monadic[[X] =>> ZIO[R, E, X]] with
-    def point[A](value: A): ZIO[R, E, A]                                       = ZIO.succeed(value)
-    def map[A, B](from: ZIO[R, E, A])(fn: A => B): ZIO[R, E, B]                = from.map(fn)
-    def flatMap[A, B](from: ZIO[R, E, A])(fn: A => ZIO[R, E, B]): ZIO[R, E, B] = from.flatMap(fn)
-
-  given Monadic[IO] with
-    def point[A](value: A): IO[A]                         = IO.pure(value)
-    def map[A, B](from: IO[A])(fn: A => B): IO[B]         = from.map(fn)
-    def flatMap[A, B](from: IO[A])(fn: A => IO[B]): IO[B] = from.flatMap(fn)
-
-  private abstract class EffectFixture[F[_], T](name: String)(using mf: Monadic[F])
+  private abstract class EffectFixture[F[_], T](name: String)(using mf: MonadError[F])
       extends AnyFixture[T](name) {
-    override def beforeAll(): F[Unit]                     = mf.unit
-    override def beforeEach(context: BeforeEach): F[Unit] = mf.unit
-    override def afterEach(context: AfterEach): F[Unit]   = mf.unit
-    override def afterAll(): F[Unit]                      = mf.unit
+    override def beforeAll(): F[Unit]                     = mf.unit(())
+    override def beforeEach(context: BeforeEach): F[Unit] = mf.unit(())
+    override def afterEach(context: AfterEach): F[Unit]   = mf.unit(())
+    override def afterAll(): F[Unit]                      = mf.unit(())
   }
 
-  trait EffectSuite[F[_]](using mf: Monadic[F]) extends FunSuite:
+  trait EffectSuite[F[_]](using mf: MonadError[F]) extends FunSuite:
     protected val backend: F[SttpBackend[F, Any]]
 
-    protected val finalizer: F[Unit] = mf.unit
+    protected val finalizer: F[Unit] = mf.unit(())
 
     protected val client = new EffectFixture[F, PokeApiClient[F, Any]]("client") {
       private var client: PokeApiClient[F, Any] = null
@@ -63,12 +52,12 @@ package object pokeapi:
         "ZIO",
         { case z: ZIO[?, ?, ?] =>
           zio.Unsafe.unsafe { implicit u =>
-            zio.Runtime.default.unsafe.runToFuture(z.asInstanceOf[ZIO[Any, Throwable, Any]])
+            zio.Runtime.default.unsafe.runToFuture(z.asInstanceOf[Task[Any]])
           }
         }
       ),
       new ValueTransform(
-        "IO",
+        "Cats",
         { case io: IO[Any] =>
           import cats.effect.unsafe.implicits.global
           io.unsafeToFuture()
