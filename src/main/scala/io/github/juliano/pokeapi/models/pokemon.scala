@@ -291,6 +291,8 @@ object pokemon:
   object LocationAreaEncounter:
     given JsonDecoder[LocationAreaEncounter] = DeriveJsonDecoder.gen
 
+  type LocationAreaEncounters = List[LocationAreaEncounter]
+
   @jsonMemberNames(SnakeCase)
   final case class PokemonColor(
       id: Int,
