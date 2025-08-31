@@ -10,7 +10,7 @@ class EncountersSuite extends ArmeriaCatsSuite:
 
   spec("enconter condition by id", SimplePokeRequest[EncounterCondition](1), _.name, "swarm")
   spec("enconter condition by name", SimplePokeRequest[EncounterCondition]("swarm"), _.id, 1)
-  spec("enconter condition resource list", fullResourceList[EncounterCondition], _.count, 13)
+  spec("enconter condition resource list", fullResourceList[EncounterCondition], _.count, 14)
 
   spec(
     "enconter condition value by id",
@@ -28,5 +28,5 @@ class EncountersSuite extends ArmeriaCatsSuite:
     "enconter condition value resource list",
     fullResourceList[EncounterConditionValue],
     _.count,
-    71
+    105
   )

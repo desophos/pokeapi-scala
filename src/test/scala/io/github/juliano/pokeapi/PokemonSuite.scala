@@ -61,7 +61,7 @@ class PokemonSuite extends ZIOSuite:
 
   spec("pokemon form by id", SimplePokeRequest[PokemonForm](1), _.name, "bulbasaur")
   spec("pokemon form by name", SimplePokeRequest[PokemonForm]("bulbasaur"), _.id, 1)
-  spec("pokemon form resource list", fullResourceList[PokemonForm], _.count, 1473)
+  spec("pokemon form resource list", fullResourceList[PokemonForm], _.count, 1527)
 
   spec("pokemon habitat by id", SimplePokeRequest[PokemonHabitat](1), _.name, "cave")
   spec("pokemon habitat by name", SimplePokeRequest[PokemonHabitat]("cave"), _.id, 1)
@@ -81,4 +81,4 @@ class PokemonSuite extends ZIOSuite:
 
   spec[Type, Type, String]("type by id", SimplePokeRequest[Type](1), _.name, "normal")
   spec("type by name", SimplePokeRequest[Type]("normal"), _.id, 1)
-  spec("type resource list", fullResourceList[Type], _.count, 20)
+  spec("type resource list", fullResourceList[Type], _.count, 21)

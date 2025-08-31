@@ -14,8 +14,8 @@ class GamesSuite extends Fs2Suite:
 
   spec("version by id", SimplePokeRequest[Version](1), _.name, "red")
   spec("version by name", SimplePokeRequest[Version]("red"), _.id, 1)
-  spec("version resource list", fullResourceList[Version], _.count, 43)
+  spec("version resource list", fullResourceList[Version], _.count, 46)
 
   spec("version group by id", SimplePokeRequest[VersionGroup](1), _.name, "red-blue")
   spec("version group by name", SimplePokeRequest[VersionGroup]("red-blue"), _.id, 1)
-  spec("version group resource list", fullResourceList[VersionGroup], _.count, 27)
+  spec("version group resource list", fullResourceList[VersionGroup], _.count, 29)
