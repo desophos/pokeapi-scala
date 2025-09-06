@@ -1,16 +1,7 @@
 package io.github.juliano.pokeapi
 
-import io.github.juliano.pokeapi.models.berries.*
-import io.github.juliano.pokeapi.models.contests.*
-import io.github.juliano.pokeapi.models.encounters.*
-import io.github.juliano.pokeapi.models.evolution.*
-import io.github.juliano.pokeapi.models.games.*
-import io.github.juliano.pokeapi.models.items.*
-import io.github.juliano.pokeapi.models.locations.*
-import io.github.juliano.pokeapi.models.machines.*
-import io.github.juliano.pokeapi.models.moves.*
-import io.github.juliano.pokeapi.models.pokemon.*
-import io.github.juliano.pokeapi.models.utility.*
+import io.github.juliano.pokeapi.models.all.*
+
 import sttp.model.Uri
 
 trait ApiPath[A]:
