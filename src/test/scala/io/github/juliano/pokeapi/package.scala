@@ -85,6 +85,40 @@ package object pokeapi:
       client().get(id).map(result => assertEquals(keyFn(result), expected))
     }
 
+    def spec[A: JsonDecoder: ApiPath](
+        label: String,
+        id: String | Long,
+        keyFn: A => String,
+        expected: String
+    ): Unit = spec[A, String](label, id, keyFn, expected)
+
+    def spec[A: JsonDecoder: ApiPath](
+        label: String,
+        id: String | Long,
+        keyFn: A => Int,
+        expected: Int
+    ): Unit = spec[A, Int](label, id, keyFn, expected)
+
+    def spec[R: ApiPath, B](
+        label: String,
+        keyFn: ResourceList => B,
+        expected: B
+    ): Unit = test(label) {
+      client().getResourceList(limit = 100000).map(result => assertEquals(keyFn(result), expected))
+    }
+
+    def spec[R: ApiPath](
+        label: String,
+        keyFn: ResourceList => String,
+        expected: String
+    ): Unit = spec[R, String](label, keyFn, expected)
+
+    def spec[R: ApiPath](
+        label: String,
+        keyFn: ResourceList => Int,
+        expected: Int
+    ): Unit = spec[R, Int](label, keyFn, expected)
+
   trait FutureSuite extends EffectSuite[Future]:
     import scala.concurrent.ExecutionContext.Implicits.global
     override val backend = Future(sttp.client3.HttpClientFutureBackend())
