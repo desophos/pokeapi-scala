@@ -7,10 +7,12 @@ import scala.util.Try
 import munit.{ AfterEach, AnyFixture, BeforeEach, Compare, FunSuite }
 import sttp.monad.MonadError
 import sttp.monad.syntax.*
-import sttp.client3.{ Identity, SttpBackend }
+import sttp.client3.{ Identity, SttpBackend, UriContext }
 import zio.{ Task, ZIO }
 import zio.json.JsonDecoder
 import cats.effect.IO
+import cats.implicits.*
+import cats.syntax.all.*
 
 package object pokeapi:
   given MonadError[Identity] = sttp.client3.monad.IdMonad
@@ -143,6 +145,14 @@ package object pokeapi:
 
   trait ArmeriaCatsSuite extends CatsSuite:
     override val backend = IO(sttp.client3.armeria.cats.ArmeriaCatsBackend[IO]())
+
+    def queryAll[A: JsonDecoder: ApiPath](label: String) = test(label) {
+      for {
+        resourceList <- client().fullResourceList[A]
+        uris = resourceList.results.map(res => uri"${res.url}")
+        resps <- uris.parTraverse(client().getUri)
+      } yield assertEquals(resps.length, resourceList.count)
+    }
 
   trait Fs2Suite extends EffectSuite[IO]:
     private val backendAndFinalizer =
