@@ -1,13 +1,22 @@
 import org.scalafmt.sbt.ScalafmtPlugin.autoImport.scalafmtOnCompile
 
-inThisBuild(List(
-  organization := "io.github.juliano",
-  homepage := Some(url("https://github.com/juliano/pokeapi-scala")),
-  licenses := List("MIT License" -> url("https://github.com/juliano/pokeapi-scala/blob/main/LICENSE")),
-  developers := List(
-    Developer("juliano", "Juliano Alves", "von.juliano@gmail.com", url("https://juliano-alves.com/"))
+inThisBuild(
+  List(
+    organization := "io.github.juliano",
+    homepage := Some(url("https://github.com/juliano/pokeapi-scala")),
+    licenses := List(
+      "MIT License" -> url("https://github.com/juliano/pokeapi-scala/blob/main/LICENSE")
+    ),
+    developers := List(
+      Developer(
+        "juliano",
+        "Juliano Alves",
+        "von.juliano@gmail.com",
+        url("https://juliano-alves.com/")
+      )
+    )
   )
-))
+)
 
 sonatypeCredentialHost := "s01.oss.sonatype.org"
 sonatypeRepository := "https://s01.oss.sonatype.org/service/local"
