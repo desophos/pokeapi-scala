@@ -1,6 +1,6 @@
 package io.github.juliano
 
-import io.github.juliano.pokeapi.PokeApiClient.{ PokeRequest, ResourceListRequest }
+import io.github.juliano.pokeapi.models.ResourceList
 import scala.concurrent.Future
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.util.Try
@@ -65,23 +65,24 @@ package object pokeapi:
       )
     )
 
-    def fullResourceList[R: ApiPath] = ResourceListRequest[R](limit = 100000)
+    extension (client: PokeApiClient[F, Any])
+      def fullResourceList[R: ApiPath] = client.getResourceList[R](limit = 100000)
 
-    def spec[A: JsonDecoder, R: ApiPath](
+    def spec[A: JsonDecoder: ApiPath](
         label: String,
-        request: PokeRequest[A, R],
+        id: String | Long,
         predicate: A => Boolean
     ): Unit = test(label) {
-      client().send(request).map(result => assert(predicate(result), result))
+      client().get(id).map(result => assert(predicate(result)))
     }
 
-    def spec[A: JsonDecoder, R: ApiPath, B](
+    def spec[A: JsonDecoder: ApiPath, B](
         label: String,
-        request: PokeRequest[A, R],
+        id: String | Long,
         keyFn: A => B,
         expected: B
     ): Unit = test(label) {
-      client().send(request).map(result => assertEquals(keyFn(result), expected, result))
+      client().get(id).map(result => assertEquals(keyFn(result), expected))
     }
 
   trait FutureSuite extends EffectSuite[Future]:
