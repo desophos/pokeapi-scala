@@ -26,7 +26,7 @@ object items:
   object Item:
     given JsonDecoder[Item] = DeriveJsonDecoder.gen
 
-  final case class ItemSprites(default: String)
+  final case class ItemSprites(default: Option[String])
 
   object ItemSprites:
     given JsonDecoder[ItemSprites] = DeriveJsonDecoder.gen
@@ -34,7 +34,7 @@ object items:
   @jsonMemberNames(SnakeCase)
   final case class ItemHolderPokemon(
       pokemon: NamedAPIResource,
-      versionDetails: List[ItemHolderPokemon]
+      versionDetails: List[ItemHolderPokemonVersionDetail]
   )
 
   object ItemHolderPokemon:

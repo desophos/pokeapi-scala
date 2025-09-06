@@ -34,7 +34,7 @@ object evolution:
       knownMove: Option[NamedAPIResource],
       knownMoveType: Option[NamedAPIResource],
       location: Option[NamedAPIResource],
-      minLevel: Int,
+      minLevel: Option[Int],
       minHappiness: Option[Int],
       minBeauty: Option[Int],
       minAffection: Option[Int],

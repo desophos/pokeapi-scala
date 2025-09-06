@@ -8,7 +8,7 @@ object locations:
   final case class Location(
       id: Int,
       name: String,
-      region: NamedAPIResource,
+      region: Option[NamedAPIResource],
       names: List[Name],
       gameIndices: List[GenerationGameIndex],
       areas: List[NamedAPIResource]
@@ -81,7 +81,7 @@ object locations:
       locations: List[NamedAPIResource],
       name: String,
       names: List[Name],
-      mainGeneration: NamedAPIResource,
+      mainGeneration: Option[NamedAPIResource],
       pokedexes: List[NamedAPIResource],
       versionGroups: List[NamedAPIResource]
   )
