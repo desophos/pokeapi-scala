@@ -33,14 +33,19 @@ case class PokeApiClient[F[_], +P](host: ApiHost = ApiHost.default)(using
         monadError.unit(value)
       case None =>
         val sttpReq = sttpRequest(uri)
+
+        // PokeAPI sometimes returns invalid cached reponses, so try again if the request failed.
+        def retry(response: SttpResponse[A]): F[SttpResponse[A]] =
+          response.body match
+            case Right(_) => monadError.unit(response)
+            case Left(_)  =>
+              // set cache to no (this is a joke; adding any query parameters bypasses CloudFlare's cache)
+              sttpReq.copy(uri = response.request.uri.addParam("cache", "no")).send(backend)
+
         sttpReq
           .send(backend)
-          .flatMap(response =>
-            // PokeAPI sometimes returns invalid cached reponses, so try again if the request failed.
-            response.body match
-              case b @ Right(body) => monadError.unit(b)
-              case Left(_)         => sttpReq.send(backend).map(_.body)
-          )
+          .flatMap(retry)
+          .map(_.body)
           .flatMap {
             case Right(value) =>
               cache.put(uri, value)
