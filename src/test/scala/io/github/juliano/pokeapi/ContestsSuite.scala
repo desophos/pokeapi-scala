@@ -5,12 +5,12 @@ import io.github.juliano.pokeapi.PokeApiClient.*
 import scala.concurrent.ExecutionContext.Implicits.global
 
 class ContestsSuite extends FutureSuite:
-  spec("contest type by id", SimplePokeRequest[ContestType](1), _.name, "cool")
-  spec("contest type by name", SimplePokeRequest[ContestType]("cool"), _.id, 1)
-  spec("contest type resource list", fullResourceList[ContestType], _.count, 5)
+  spec[ContestType]("contest type by id", 1, _.name, "cool")
+  spec[ContestType]("contest type by name", "cool", _.id, 1)
+  spec[ContestType]("contest type resource list", _.count, 5)
 
-  spec("contest effect by id", SimplePokeRequest[ContestEffect](1), _.appeal, 4)
-  spec("contest effect resource list", fullResourceList[ContestEffect], _.count, 33)
+  spec[ContestEffect]("contest effect by id", 1, _.appeal, 4)
+  spec[ContestEffect]("contest effect resource list", _.count, 33)
 
-  spec("super contest effect by id", SimplePokeRequest[SuperContestEffect](1), _.appeal, 2)
-  spec("super contest effect resource list", fullResourceList[SuperContestEffect], _.count, 22)
+  spec[SuperContestEffect]("super contest effect by id", 1, _.appeal, 2)
+  spec[SuperContestEffect]("super contest effect resource list", _.count, 22)

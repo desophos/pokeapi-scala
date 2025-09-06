@@ -4,18 +4,18 @@ import io.github.juliano.pokeapi.models.games.*
 import io.github.juliano.pokeapi.PokeApiClient.*
 
 class GamesSuite extends Fs2Suite:
-  spec("generation by id", SimplePokeRequest[Generation](1), _.name, "generation-i")
-  spec("generation by name", SimplePokeRequest[Generation]("generation-i"), _.id, 1)
-  spec("generation resource list", fullResourceList[Generation], _.count, 9)
+  spec[Generation]("generation by id", 1, _.name, "generation-i")
+  spec[Generation]("generation by name", "generation-i", _.id, 1)
+  spec[Generation]("generation resource list", _.count, 9)
 
-  spec("pokedex by id", SimplePokeRequest[Pokedex](1), _.name, "national")
-  spec("pokedex by name", SimplePokeRequest[Pokedex]("national"), _.id, 1)
-  spec("pokedex resource list", fullResourceList[Pokedex], _.count, 32)
+  spec[Pokedex]("pokedex by id", 1, _.name, "national")
+  spec[Pokedex]("pokedex by name", "national", _.id, 1)
+  spec[Pokedex]("pokedex resource list", _.count, 32)
 
-  spec("version by id", SimplePokeRequest[Version](1), _.name, "red")
-  spec("version by name", SimplePokeRequest[Version]("red"), _.id, 1)
-  spec("version resource list", fullResourceList[Version], _.count, 46)
+  spec[Version]("version by id", 1, _.name, "red")
+  spec[Version]("version by name", "red", _.id, 1)
+  spec[Version]("version resource list", _.count, 46)
 
-  spec("version group by id", SimplePokeRequest[VersionGroup](1), _.name, "red-blue")
-  spec("version group by name", SimplePokeRequest[VersionGroup]("red-blue"), _.id, 1)
-  spec("version group resource list", fullResourceList[VersionGroup], _.count, 29)
+  spec[VersionGroup]("version group by id", 1, _.name, "red-blue")
+  spec[VersionGroup]("version group by name", "red-blue", _.id, 1)
+  spec[VersionGroup]("version group resource list", _.count, 29)

@@ -4,29 +4,14 @@ import io.github.juliano.pokeapi.models.encounters.*
 import io.github.juliano.pokeapi.PokeApiClient.*
 
 class EncountersSuite extends ArmeriaCatsSuite:
-  spec("enconter method by id", SimplePokeRequest[EncounterMethod](1), _.name, "walk")
-  spec("enconter method by name", SimplePokeRequest[EncounterMethod]("walk"), _.id, 1)
-  spec("enconter method resource list", fullResourceList[EncounterMethod], _.count, 37)
+  spec[EncounterMethod]("enconter method by id", 1, _.name, "walk")
+  spec[EncounterMethod]("enconter method by name", "walk", _.id, 1)
+  spec[EncounterMethod]("enconter method resource list", _.count, 37)
 
-  spec("enconter condition by id", SimplePokeRequest[EncounterCondition](1), _.name, "swarm")
-  spec("enconter condition by name", SimplePokeRequest[EncounterCondition]("swarm"), _.id, 1)
-  spec("enconter condition resource list", fullResourceList[EncounterCondition], _.count, 14)
+  spec[EncounterCondition]("enconter condition by id", 1, _.name, "swarm")
+  spec[EncounterCondition]("enconter condition by name", "swarm", _.id, 1)
+  spec[EncounterCondition]("enconter condition resource list", _.count, 14)
 
-  spec(
-    "enconter condition value by id",
-    SimplePokeRequest[EncounterConditionValue](1),
-    _.name,
-    "swarm-yes"
-  )
-  spec(
-    "enconter condition value by name",
-    SimplePokeRequest[EncounterConditionValue]("swarm-yes"),
-    _.id,
-    1
-  )
-  spec(
-    "enconter condition value resource list",
-    fullResourceList[EncounterConditionValue],
-    _.count,
-    105
-  )
+  spec[EncounterConditionValue]("enconter condition value by id", 1, _.name, "swarm-yes")
+  spec[EncounterConditionValue]("enconter condition value by name", "swarm-yes", _.id, 1)
+  spec[EncounterConditionValue]("enconter condition value resource list", _.count, 105)

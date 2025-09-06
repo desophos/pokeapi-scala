@@ -4,9 +4,9 @@ import io.github.juliano.pokeapi.models.evolution.*
 import io.github.juliano.pokeapi.PokeApiClient.*
 
 class EvolutionSuite extends Fs2Suite:
-  spec("evolution chain by id", SimplePokeRequest[EvolutionChain](1), _.babyTriggerItem.isEmpty)
-  spec("evolution chain resource list", fullResourceList[EvolutionChain], _.count, 541)
+  spec[EvolutionChain]("evolution chain by id", 1, _.babyTriggerItem.isEmpty)
+  spec[EvolutionChain]("evolution chain resource list", _.count, 541)
 
-  spec("evolution trigger by id", SimplePokeRequest[EvolutionTrigger](1), _.name, "level-up")
-  spec("evolution trigger by name", SimplePokeRequest[EvolutionTrigger]("level-up"), _.id, 1)
-  spec("evolution trigger resource list", fullResourceList[EvolutionTrigger], _.count, 13)
+  spec[EvolutionTrigger]("evolution trigger by id", 1, _.name, "level-up")
+  spec[EvolutionTrigger]("evolution trigger by name", "level-up", _.id, 1)
+  spec[EvolutionTrigger]("evolution trigger resource list", _.count, 13)

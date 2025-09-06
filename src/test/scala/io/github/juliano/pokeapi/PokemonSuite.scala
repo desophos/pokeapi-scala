@@ -4,81 +4,72 @@ import io.github.juliano.pokeapi.models.pokemon.*
 import io.github.juliano.pokeapi.PokeApiClient.*
 
 class PokemonSuite extends ZIOSuite:
-  spec("ability by id", SimplePokeRequest[Ability](1), _.name, "stench")
-  spec("ability by name", SimplePokeRequest[Ability]("stench"), _.id, 1)
-  spec("ability resource list", fullResourceList[Ability], _.count, 367)
+  spec[Ability]("ability by id", 1, _.name, "stench")
+  spec[Ability]("ability by name", "stench", _.id, 1)
+  spec[Ability]("ability resource list", _.count, 367)
 
-  spec(
-    "characteristic by id",
-    SimplePokeRequest[Characteristic](1),
-    _.highestStat.name.contains("hp")
-  )
-  spec("characteristic resource list", fullResourceList[Characteristic], _.count, 30)
+  spec[Characteristic]("characteristic by id", 1, _.highestStat.name.contains("hp"))
+  spec[Characteristic]("characteristic resource list", _.count, 30)
 
-  spec("egg group by id", SimplePokeRequest[EggGroup](1), _.name, "monster")
-  spec("egg group by name", SimplePokeRequest[EggGroup]("monster"), _.id, 1)
-  spec("egg group resource list", fullResourceList[EggGroup], _.count, 15)
+  spec[EggGroup]("egg group by id", 1, _.name, "monster")
+  spec[EggGroup]("egg group by name", "monster", _.id, 1)
+  spec[EggGroup]("egg group resource list", _.count, 15)
 
-  spec("gender by id", SimplePokeRequest[Gender](1), _.name, "female")
-  spec("gender by name", SimplePokeRequest[Gender]("female"), _.id, 1)
-  spec("gender resource list", fullResourceList[Gender], _.count, 3)
+  spec[Gender]("gender by id", 1, _.name, "female")
+  spec[Gender]("gender by name", "female", _.id, 1)
+  spec[Gender]("gender resource list", _.count, 3)
 
-  spec("growth rate by id", SimplePokeRequest[GrowthRate](1), _.name, "slow")
-  spec("growth rate by name", SimplePokeRequest[GrowthRate]("slow"), _.id, 1)
-  spec("growth rate resource list", fullResourceList[GrowthRate], _.count, 6)
+  spec[GrowthRate]("growth rate by id", 1, _.name, "slow")
+  spec[GrowthRate]("growth rate by name", "slow", _.id, 1)
+  spec[GrowthRate]("growth rate resource list", _.count, 6)
 
-  spec("nature by id", SimplePokeRequest[Nature](1), _.name, "hardy")
-  spec("nature by name", SimplePokeRequest[Nature]("hardy"), _.id, 1)
-  spec("nature resource list", fullResourceList[Nature], _.count, 25)
+  spec[Nature]("nature by id", 1, _.name, "hardy")
+  spec[Nature]("nature by name", "hardy", _.id, 1)
+  spec[Nature]("nature resource list", _.count, 25)
 
-  spec("pokeathlon stat by id", SimplePokeRequest[PokeathlonStat](1), _.name, "speed")
-  spec("pokeathlon stat by name", SimplePokeRequest[PokeathlonStat]("speed"), _.id, 1)
-  spec("pokeathlon stat resource list", fullResourceList[PokeathlonStat], _.count, 5)
+  spec[PokeathlonStat]("pokeathlon stat by id", 1, _.name, "speed")
+  spec[PokeathlonStat]("pokeathlon stat by name", "speed", _.id, 1)
+  spec[PokeathlonStat]("pokeathlon stat resource list", _.count, 5)
 
-  spec("pokemon by id", SimplePokeRequest[Pokemon](1), _.name, "bulbasaur")
-  spec("pokemon by name", SimplePokeRequest[Pokemon]("bulbasaur"), _.id, 1)
-  spec(
-    "pokemon resource list",
-    fullResourceList[Pokemon],
-    _.count,
-    1302
-  )
+  spec[Pokemon]("pokemon by id", 1, _.name, "bulbasaur")
+  spec[Pokemon]("pokemon by name", "bulbasaur", _.id, 1)
+  spec[Pokemon]("pokemon resource list", _.count, 1302)
 
-  spec(
+  spec[LocationAreaEncounters](
     "location area encounter by id",
-    SimplePokeRequest[LocationAreaEncounters](1),
+    1,
     _.head.locationArea.name.contains("cerulean-city-area")
   )
-  spec(
+  spec[LocationAreaEncounters](
     "location area encounter by name",
-    SimplePokeRequest[LocationAreaEncounters]("bulbasaur"),
+    "bulbasaur",
     _.head.locationArea.name.contains("cerulean-city-area")
   )
 
-  spec("pokemon color by id", SimplePokeRequest[PokemonColor](1), _.name, "black")
-  spec("pokemon color by name", SimplePokeRequest[PokemonColor]("black"), _.id, 1)
-  spec("pokemon color resource list", fullResourceList[PokemonColor], _.count, 10)
+  spec[PokemonColor]("pokemon color by id", 1, _.name, "black")
+  spec[PokemonColor]("pokemon color by name", "black", _.id, 1)
+  spec[PokemonColor]("pokemon color resource list", _.count, 10)
 
-  spec("pokemon form by id", SimplePokeRequest[PokemonForm](1), _.name, "bulbasaur")
-  spec("pokemon form by name", SimplePokeRequest[PokemonForm]("bulbasaur"), _.id, 1)
-  spec("pokemon form resource list", fullResourceList[PokemonForm], _.count, 1527)
+  spec[PokemonForm]("pokemon form by id", 1, _.name, "bulbasaur")
+  spec[PokemonForm]("pokemon form by name", "bulbasaur", _.id, 1)
+  spec[PokemonForm]("pokemon form resource list", _.count, 1527)
 
-  spec("pokemon habitat by id", SimplePokeRequest[PokemonHabitat](1), _.name, "cave")
-  spec("pokemon habitat by name", SimplePokeRequest[PokemonHabitat]("cave"), _.id, 1)
-  spec("pokemon habitat resource list", fullResourceList[PokemonHabitat], _.count, 9)
+  spec[PokemonHabitat]("pokemon habitat by id", 1, _.name, "cave")
+  spec[PokemonHabitat]("pokemon habitat by name", "cave", _.id, 1)
+  spec[PokemonHabitat]("pokemon habitat resource list", _.count, 9)
 
-  spec("pokemon shape by id", SimplePokeRequest[PokemonShape](1), _.name, "ball")
-  spec("pokemon shape by name", SimplePokeRequest[PokemonShape]("ball"), _.id, 1)
-  spec("pokemon shape resource list", fullResourceList[PokemonShape], _.count, 14)
+  spec[PokemonShape]("pokemon shape by id", 1, _.name, "ball")
+  spec[PokemonShape]("pokemon shape by name", "ball", _.id, 1)
+  spec[PokemonShape]("pokemon shape resource list", _.count, 14)
 
-  spec("pokemon species by id", SimplePokeRequest[PokemonSpecies](1), _.name, "bulbasaur")
-  spec("pokemon species by name", SimplePokeRequest[PokemonSpecies]("bulbasaur"), _.id, 1)
-  spec("pokemon species resource list", fullResourceList[PokemonSpecies], _.count, 1025)
+  spec[PokemonSpecies]("pokemon species by id", 1, _.name, "bulbasaur")
+  spec[PokemonSpecies]("pokemon species by name", "bulbasaur", _.id, 1)
+  spec[PokemonSpecies]("pokemon species resource list", _.count, 1025)
 
-  spec[Stat, Stat, String]("stat by id", SimplePokeRequest[Stat](1), _.name, "hp")
-  spec("stat by name", SimplePokeRequest[Stat]("hp"), _.id, 1)
-  spec("stat resource list", fullResourceList[Stat], _.count, 8)
+  spec[Stat]("stat by id", 1, _.name, "hp")
+  spec[Stat]("stat by name", "hp", _.id, 1)
+  spec[Stat]("stat resource list", _.count, 8)
 
-  spec[Type, Type, String]("type by id", SimplePokeRequest[Type](1), _.name, "normal")
-  spec("type by name", SimplePokeRequest[Type]("normal"), _.id, 1)
-  spec("type resource list", fullResourceList[Type], _.count, 21)
+  spec[Type]("type by id", 1, _.name, "normal")
+  spec[Type]("type by name", "normal", _.id, 1)
+  spec[Type]("type resource list", _.count, 21)
