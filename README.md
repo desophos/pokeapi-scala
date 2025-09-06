@@ -21,7 +21,7 @@ This client is written using [sttp](https://sttp.softwaremill.com/en/latest/inde
 
 ## Usage
 
-Instantiate a backend implicitly, create a `PokeApiClient()` and start consuming the api, calling `client.get(id | name)`. Most requests accept an `id: Long` or `name: String` (have a look at [Scala 3 Union Types](https://docs.scala-lang.org/scala3/book/types-union.html)).
+First, `import io.github.juliano.pokeapi.given`. Then instantiate a backend implicitly, create a `PokeApiClient()` and start consuming the api, calling `client.get(id | name)`. Most requests accept an `id: Long` or `name: String` (have a look at [Scala 3 Union Types](https://docs.scala-lang.org/scala3/book/types-union.html)).
 
 It's possible to [list / paginate resources](https://pokeapi.co/docs/v2#resource-listspagination-section) as well, calling `client.getResourceList(offset: Int, limit: Int)`.
 
