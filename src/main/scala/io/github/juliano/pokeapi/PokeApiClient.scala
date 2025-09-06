@@ -16,49 +16,54 @@ case class PokeApiClient[F[_], +P](host: ApiHost = ApiHost.default)(using
     backend: SttpBackend[F, P]
 ):
   given monadError: MonadError[F] = backend.responseMonad
-  private def cache[A, R]: Cache[PokeRequest[A, R], A] =
-    Scaffeine().build[PokeRequest[A, R], A]()
 
-  def send[A: JsonDecoder, R: ApiPath](request: PokeRequest[A, R]): F[A] =
-    cache.getIfPresent(request) match
+  private def cache[A]: Cache[Uri, A] =
+    Scaffeine().build[Uri, A]()
+
+  private def sttpRequest[A: JsonDecoder](uri: Uri): SttpRequest[A] =
+    basicRequest
+      .get(uri)
+      .readTimeout(10.seconds)
+      .contentType(MediaType.ApplicationJson)
+      .response(asJson[A])
+
+  def getUri[A: JsonDecoder](uri: Uri): F[A] =
+    cache.getIfPresent(uri) match
       case Some(value) =>
         monadError.unit(value)
       case None =>
-        request
-          .sttpRequest(host)
+        val sttpReq = sttpRequest(uri)
+        sttpReq
           .send(backend)
-          .map(_.body)
+          .flatMap(response =>
+            // PokeAPI sometimes returns invalid cached reponses, so try again if the request failed.
+            response.body match
+              case b @ Right(body) => monadError.unit(b)
+              case Left(_)         => sttpReq.send(backend).map(_.body)
+          )
           .flatMap {
             case Right(value) =>
-              cache.put(request, value)
+              cache.put(uri, value)
               monadError.unit(value)
-            case Left(error) => monadError.error(error)
+            case Left(error) =>
+              monadError.error(
+                Throwable(
+                  s"Failed to parse response.\nError was ${error.getMessage}\nURI was ${uri}",
+                  error
+                )
+              )
           }
 
-  def send[A: JsonDecoder: ApiPath](request: SimplePokeRequest[A]): F[A] = send(request)
+  def get[A: JsonDecoder: ApiPath](id: String | Long): F[A] =
+    getUri(host.uri.addResourcePath[A](id))
 
-  def send[R: ApiPath](request: ResourceListRequest[R]): F[ResourceList] = send(request)
+  def getResourceList[R: ApiPath](offset: Int = 0, limit: Int = 20): F[ResourceList] =
+    getUri(
+      host.uri
+        .addResourcePath[R]("")
+        .addParams(Map("offset" -> offset.toString, "limit" -> limit.toString))
+    )
 
 object PokeApiClient:
   type FailureResponse = ResponseException[String, String]
   type SttpRequest[A]  = Request[Either[FailureResponse, A], Any]
-
-  sealed trait PokeRequest[A: JsonDecoder, R: ApiPath](
-      id: String | Long,
-      params: Map[String, String] = Map.empty
-  ):
-    def sttpRequest(host: ApiHost): SttpRequest[A] =
-      basicRequest
-        .get(host.uri.addResourcePath[R](id).addParams(params))
-        .readTimeout(10.seconds)
-        .contentType(MediaType.ApplicationJson)
-        .response(asJson[A])
-
-  case class SimplePokeRequest[A: JsonDecoder: ApiPath](id: String | Long)
-      extends PokeRequest[A, A](id)
-
-  case class ResourceListRequest[R: ApiPath](offset: Int = 0, limit: Int = 20)
-      extends PokeRequest[ResourceList, R](
-        "",
-        Map("offset" -> offset.toString, "limit" -> limit.toString)
-      )
