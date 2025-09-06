@@ -5,5 +5,6 @@ import io.github.juliano.pokeapi.PokeApiClient.*
 
 class UtilitySuite extends ArmeriaZIOSuite:
   spec[Language]("language by id", 1, _.name, "ja-Hrkt")
-  spec[Language]("language by name", "ja-Hrkt", _.id, 1)
+  // Languages with hyphens can't be retrieved by name due to a bug in PokeAPI.
+  spec[Language]("language by name", "roomaji", _.id, 2)
   spec[Language]("language resource list", _.count, 13)
