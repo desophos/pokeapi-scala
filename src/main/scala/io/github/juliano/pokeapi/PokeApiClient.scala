@@ -67,3 +67,4 @@ case class PokeApiClient[F[_], +P](host: ApiHost = ApiHost.default)(using
 object PokeApiClient:
   type FailureResponse = ResponseException[String, String]
   type SttpRequest[A]  = Request[Either[FailureResponse, A], Any]
+  type SttpResponse[A] = Response[Either[FailureResponse, A]]
