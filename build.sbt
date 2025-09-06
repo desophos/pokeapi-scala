@@ -13,6 +13,12 @@ inThisBuild(
         "Juliano Alves",
         "von.juliano@gmail.com",
         url("https://juliano-alves.com/")
+      ),
+      Developer(
+        "desophos",
+        "Heather Horowitz",
+        "desophos@gmail.com",
+        url("https://github.com/desophos/")
       )
     )
   )
