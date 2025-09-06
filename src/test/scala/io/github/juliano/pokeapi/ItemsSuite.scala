@@ -1,7 +1,6 @@
 package io.github.juliano.pokeapi;
 
 import io.github.juliano.pokeapi.models.items.*
-import io.github.juliano.pokeapi.PokeApiClient.*
 
 class ItemsSuite extends ZIOSuite:
   spec[Item]("item by id", 1, _.name, "master-ball")

@@ -1,7 +1,6 @@
 package io.github.juliano.pokeapi
 
 import io.github.juliano.pokeapi.models.encounters.*
-import io.github.juliano.pokeapi.PokeApiClient.*
 
 class EncountersSuite extends ArmeriaCatsSuite:
   spec[EncounterMethod]("enconter method by id", 1, _.name, "walk")

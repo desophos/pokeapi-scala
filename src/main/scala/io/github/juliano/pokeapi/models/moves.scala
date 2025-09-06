@@ -2,6 +2,7 @@ package io.github.juliano.pokeapi.models
 
 import io.github.juliano.pokeapi.models.pokemon.AbilityEffectChange
 import io.github.juliano.pokeapi.models.utility.*
+
 import zio.json.*
 
 object moves:

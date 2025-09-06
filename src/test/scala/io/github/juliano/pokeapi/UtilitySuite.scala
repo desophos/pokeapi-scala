@@ -1,7 +1,6 @@
 package io.github.juliano.pokeapi
 
 import io.github.juliano.pokeapi.models.utility.*
-import io.github.juliano.pokeapi.PokeApiClient.*
 
 class UtilitySuite extends ArmeriaZIOSuite:
   spec[Language]("language by id", 1, _.name, "ja-Hrkt")

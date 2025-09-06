@@ -1,7 +1,6 @@
 package io.github.juliano.pokeapi
 
 import io.github.juliano.pokeapi.models.machines.*
-import io.github.juliano.pokeapi.PokeApiClient.*
 
 class MachinesSuite extends OkSyncSuite:
   spec[Machine]("machine by id", 1, _.move.name.contains("mega-punch"))

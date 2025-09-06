@@ -1,7 +1,6 @@
 package io.github.juliano.pokeapi
 
 import io.github.juliano.pokeapi.models.berries.*
-import io.github.juliano.pokeapi.PokeApiClient.*
 
 class BerriesSuite extends SyncSuite:
   spec[Berry]("berry by id", 1, _.name, "cheri")

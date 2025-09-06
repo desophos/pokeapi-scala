@@ -1,18 +1,20 @@
 package io.github.juliano
 
-import io.github.juliano.pokeapi.models.ResourceList
-import scala.concurrent.Future
 import scala.concurrent.ExecutionContext.Implicits.global
+import scala.concurrent.Future
 import scala.util.Try
-import munit.{ AfterEach, AnyFixture, BeforeEach, Compare, FunSuite }
-import sttp.monad.MonadError
-import sttp.monad.syntax.*
-import sttp.client3.{ Identity, SttpBackend, UriContext }
-import zio.{ Task, ZIO }
-import zio.json.JsonDecoder
+
+import io.github.juliano.pokeapi.models.ResourceList
+
 import cats.effect.IO
 import cats.implicits.*
 import cats.syntax.all.*
+import munit.{ AfterEach, AnyFixture, BeforeEach, Compare, FunSuite }
+import sttp.client3.{ Identity, SttpBackend, UriContext }
+import sttp.monad.MonadError
+import sttp.monad.syntax.*
+import zio.{ Task, ZIO }
+import zio.json.JsonDecoder
 
 package object pokeapi:
   given MonadError[Identity] = sttp.client3.monad.IdMonad

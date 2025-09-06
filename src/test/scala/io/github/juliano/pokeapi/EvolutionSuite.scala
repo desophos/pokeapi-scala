@@ -1,7 +1,6 @@
 package io.github.juliano.pokeapi
 
 import io.github.juliano.pokeapi.models.evolution.*
-import io.github.juliano.pokeapi.PokeApiClient.*
 
 class EvolutionSuite extends Fs2Suite:
   spec[EvolutionChain]("evolution chain by id", 1, _.babyTriggerItem.isEmpty)

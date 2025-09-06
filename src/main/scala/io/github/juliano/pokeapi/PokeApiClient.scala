@@ -1,16 +1,17 @@
 package io.github.juliano.pokeapi
 
-import com.github.blemale.scaffeine.{ Cache, Scaffeine }
-import io.github.juliano.pokeapi.models.ResourceList
+import scala.concurrent.duration.DurationInt
+
 import io.github.juliano.pokeapi.PokeApiClient.*
+import io.github.juliano.pokeapi.models.ResourceList
+
+import com.github.blemale.scaffeine.{ Cache, Scaffeine }
 import sttp.client3.*
 import sttp.client3.ziojson.asJson
 import sttp.model.{ MediaType, Uri }
 import sttp.monad.MonadError
 import sttp.monad.syntax.MonadErrorOps
 import zio.json.JsonDecoder
-
-import scala.concurrent.duration.DurationInt
 
 case class PokeApiClient[F[_], +P](host: ApiHost = ApiHost.default)(using
     backend: SttpBackend[F, P]

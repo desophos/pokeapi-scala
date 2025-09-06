@@ -1,10 +1,9 @@
 package io.github.juliano.pokeapi.models
 
-import io.github.juliano.pokeapi.models.moves.MoveStatChange
 import io.github.juliano.pokeapi.models.utility.*
+
 import zio.json.*
 import zio.json.ast.*
-import zio.Chunk
 
 object pokemon:
   @jsonMemberNames(SnakeCase)

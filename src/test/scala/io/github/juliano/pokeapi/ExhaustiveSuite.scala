@@ -1,7 +1,6 @@
 package io.github.juliano.pokeapi
 
 import io.github.juliano.pokeapi.models.all.*
-import scala.concurrent.duration.*
 
 class ExhaustiveSuite extends ArmeriaCatsSuite:
   queryAll[Berry]("every Berry is retrieved successfully")

@@ -1,7 +1,6 @@
 package io.github.juliano.pokeapi
 
 import io.github.juliano.pokeapi.models.pokemon.*
-import io.github.juliano.pokeapi.PokeApiClient.*
 
 class PokemonSuite extends ZIOSuite:
   spec[Ability]("ability by id", 1, _.name, "stench")

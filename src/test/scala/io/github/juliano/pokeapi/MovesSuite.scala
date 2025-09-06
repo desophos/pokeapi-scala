@@ -1,7 +1,6 @@
 package io.github.juliano.pokeapi
 
 import io.github.juliano.pokeapi.models.moves.*
-import io.github.juliano.pokeapi.PokeApiClient.*
 
 class MovesSuite extends TrySuite:
   spec[Move]("move by id", 1, _.name, "pound")

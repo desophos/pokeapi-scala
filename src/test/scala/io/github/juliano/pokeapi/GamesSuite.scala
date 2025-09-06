@@ -1,7 +1,6 @@
 package io.github.juliano.pokeapi
 
 import io.github.juliano.pokeapi.models.games.*
-import io.github.juliano.pokeapi.PokeApiClient.*
 
 class GamesSuite extends Fs2Suite:
   spec[Generation]("generation by id", 1, _.name, "generation-i")

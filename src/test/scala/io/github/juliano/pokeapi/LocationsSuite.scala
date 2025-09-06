@@ -1,7 +1,6 @@
 package io.github.juliano.pokeapi
 
 import io.github.juliano.pokeapi.models.locations.*
-import io.github.juliano.pokeapi.PokeApiClient.*
 
 class LocationsSuite extends CatsSuite:
   spec[Location]("location by id", 1, _.name, "canalave-city")

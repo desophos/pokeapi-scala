@@ -1,8 +1,6 @@
 package io.github.juliano.pokeapi
 
 import io.github.juliano.pokeapi.models.contests.*
-import io.github.juliano.pokeapi.PokeApiClient.*
-import scala.concurrent.ExecutionContext.Implicits.global
 
 class ContestsSuite extends FutureSuite:
   spec[ContestType]("contest type by id", 1, _.name, "cool")
