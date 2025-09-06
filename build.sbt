@@ -29,7 +29,18 @@ lazy val pokeapi = project
     name := "pokeapi-scala",
     scalaVersion := scala3Version,
     scalafmtOnCompile := true,
-    scalacOptions := Seq("-Xmax-inlines", "64"),
+    scalacOptions := Seq(
+      "-explain",
+      "-explain-types",
+      "-feature",
+      "-unchecked",
+      "-deprecation",
+      "-Xfatal-warnings",
+      "-Xmax-inlines",
+      "64",
+      "-Wsafe-init",
+      "-Wunused:imports"
+    ),
     libraryDependencies ++= Seq(
       "com.softwaremill.sttp.client3" %% "core"                           % "3.9.3",
       "com.softwaremill.sttp.client3" %% "zio-json"                       % "3.9.3",
